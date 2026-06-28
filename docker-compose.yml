@@ -1,0 +1,38 @@
+version: "3.9" 
+services:
+  server:
+    image: python:3.11-slim
+    container_name: csci-server-hamley
+    working_dir: /app
+    volumes:
+            - ./server-hamley:/app
+    environment:
+            - STUDENT_USERNAME=hamley
+            - APP_PORT=8529
+    command: bash
+    tty: true
+    stdin_open: true
+    networks: [ csci-net-hamley ]
+    ports:
+            - "25297:8529"
+
+
+  client:
+    image: python:3.11-slim
+    container_name: csci-client-hamley
+    working_dir: /app
+    volumes:
+            - ./client-hamley:/app
+    environment:
+            - STUDENT_USERNAME=hamley
+            - SERVER_HOST=csci-server-hamley
+            - SERVER_PORT=8529
+    command: bash
+    tty: true
+    stdin_open: true
+    networks: [ csci-net-hamley ]
+
+
+networks:
+        csci-net-hamley:
+                driver: bridge
